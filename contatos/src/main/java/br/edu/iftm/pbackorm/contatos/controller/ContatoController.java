@@ -3,13 +3,19 @@ package br.edu.iftm.pbackorm.contatos.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.iftm.pbackorm.contatos.domain.Contato;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -21,11 +27,6 @@ public class ContatoController {
         new Contato(2,"Vegeta")
     ));
 
-    @GetMapping
-    public ResponseEntity<List<Contato>> listar() {
-        return ResponseEntity.ok(contatos);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Contato> buscarPorId(@PathVariable Integer id) {
         for (Contato contato: contatos) {
@@ -35,9 +36,39 @@ public class ContatoController {
         }
         return ResponseEntity.notFound().build();
     }
-    
 
+    @GetMapping
+    public ResponseEntity<List<Contato>> listar(
+        @RequestParam(required = false) String nome) {
+        if (nome == null) {
+            return ResponseEntity.ok(contatos);
+        }
+        List<Contato> resposta = new ArrayList<>();
+        for (Contato contato: contatos) {
+            if (contato.getNome().toLowerCase()
+                .contains(nome.toLowerCase())) {
+                resposta.add(contato);
+            }
+        }
+        return ResponseEntity.ok(resposta);
+    }
 
+    @PostMapping
+    public ResponseEntity<Contato> novo(@RequestBody Contato contato) {
+        contatos.add(contato);
+        return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(contato);
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletar(@PathVariable Integer id) {
+        boolean removido = contatos.removeIf(
+            contato -> contato.getCodigo().equals(id));
+        if (removido) {
+            return ResponseEntity.noContent().build();
+        }    
+        return ResponseEntity.notFound().build();
+    }
 
 }
