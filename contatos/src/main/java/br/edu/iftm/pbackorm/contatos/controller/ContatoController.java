@@ -1,45 +1,37 @@
 package br.edu.iftm.pbackorm.contatos.controller;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.iftm.pbackorm.contatos.domain.Contato;
-import br.edu.iftm.pbackorm.contatos.dto.ErroDTO;
+import br.edu.iftm.pbackorm.contatos.repository.ContatoRepository;
 
 
 
 @RestController
 @RequestMapping("/contatos")
 public class ContatoController {
-    
-    private final List<Contato> contatos = new ArrayList<>(List.of(
-        new Contato(1,"Kakaroto"),
-        new Contato(2,"Vegeta")
-    ));
+
+    private final ContatoRepository repository;
+
+    public ContatoController(ContatoRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Contato> buscarPorId(@PathVariable Integer id) {
-        for (Contato contato: contatos) {
-            if (contato.getCodigo().equals(id)) {
-                return ResponseEntity.ok(contato);
-            }
+        Optional<Contato> contatoOptional = repository.findById(id);
+        if (contatoOptional.isPresent()) {
+            return ResponseEntity.ok().body(contatoOptional.get());
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().build();        
     }
-
+/* 
     @GetMapping
     public ResponseEntity<List<Contato>> listar(
         @RequestParam(required = false) String nome) {
@@ -104,5 +96,5 @@ public class ContatoController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
             new ErroDTO("Contato não encontrado "+id, LocalDateTime.now()));
     }
-
+*/
 }
