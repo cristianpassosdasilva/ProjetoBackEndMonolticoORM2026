@@ -10,6 +10,7 @@ import br.edu.iftm.pbackorm.contatos.domain.Contato;
 @Repository
 public interface ContatoRepository extends JpaRepository<Contato, Integer> {
 
-    public List<Contato> findByNomeContainingIgnoreCase(String nome);
-
+    List<Contato> findByNomeContainingIgnoreCaseAndEmailContainingIgnoreCaseAndTelefoneContaining(
+            String nome, String email, String telefone);
+ 
 }
