@@ -15,6 +15,17 @@ import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
 public class ExceptionHandlerController {
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErroDTO> tratarNaoEncontrado(EntityNotFoundException ex) {
+        ErroDTO erro = ErroDTO.builder()
+                .dataHora(LocalDateTime.now())
+                .erros(Arrays.asList(ex.getMessage()))
+                .mensagem("Não Encontrado")
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
+    }
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErroDTO> tratarBadRequest(MethodArgumentNotValidException ex) {
@@ -33,15 +44,5 @@ public class ExceptionHandlerController {
         return ResponseEntity.badRequest().body(erro);
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErroDTO> tratarNaoEncontrado(EntityNotFoundException ex) {
-        ErroDTO erro = ErroDTO.builder()
-                .dataHora(LocalDateTime.now())
-                .erros(Arrays.asList(ex.getMessage()))
-                .mensagem("Não Encontrado")
-                .build();
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
-    }
 
 }
