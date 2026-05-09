@@ -1,5 +1,7 @@
 package br.edu.iftm.tspi.pbackorm.e_commerce.domain;
 
+import java.lang.annotation.ElementType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,15 +28,12 @@ public class Produto {
     private Integer id;
 
     @Column(name="produtonome",nullable=false)
-    @NotBlank(message  = "Nome do Produto é obrigatório")
     private String nome;
 
     @Column(name="preco")
-    @Positive(message = "O preço do produto deve ser maior do que 0")
     private Double preco;
 
     @Column(name="unidadesemestoque")
-    @Min(value = 0, message= "Não pode ter estoque negativo")
     private Short estoque;
 
     @Column(name="Imagem")
