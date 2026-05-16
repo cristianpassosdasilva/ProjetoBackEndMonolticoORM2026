@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,14 +26,13 @@ public class Categoria {
     private Integer id;
 
     @Column(name="categoria",nullable=false)
-    @NotBlank(message  ="O campo de nome da categoria é obrigatório")
     private String nome;
 
     @Column(name="descricao")
     private String descricao;
 
     @OneToMany(mappedBy="categoria")
-    @JsonIgnore
+   // @JsonIgnore
     private List<Produto> produtos;
 
 }
