@@ -1,8 +1,7 @@
-package br.edu.iftm.pbackorm.contatos.dto;
+package br.edu.iftm.tspi.pbackorm.e_commerce.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +17,5 @@ public class ErroDTO {
     private List<String> erros;
 
     private LocalDateTime dataHora;
-
-    private Map<String, String> campos;
 
 }

@@ -1,23 +1,22 @@
 package br.edu.iftm.pbackorm.contatos.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.iftm.pbackorm.contatos.domain.Contato;
-import br.edu.iftm.pbackorm.contatos.handler.exception.RecursoNaoEncontradoException;
 import br.edu.iftm.pbackorm.contatos.repository.ContatoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 
@@ -35,10 +34,11 @@ public class ContatoController {
     @GetMapping("/{id}")
     public ResponseEntity<Contato> buscarPorId(@PathVariable Integer id) {
         Contato contato = repository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Contato nao encontrado: " + id));
-        return ResponseEntity.ok(contato);
+                            .orElseThrow(() -> new EntityNotFoundException
+                                ("Contato de ID "+id+" não encontrado"));
+        return ResponseEntity.ok().body(contato);
     }
- 
+
     @GetMapping
     public List<Contato> listar(
         @RequestParam(required = false) String nome,
@@ -63,26 +63,22 @@ public class ContatoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Contato> atualizar(
-            @PathVariable Integer id,
-            @Valid @RequestBody Contato contatoAtualizado) {
-        Contato contato = repository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Contato nao encontrado: " + id));
-        contato.setNome(contatoAtualizado.getNome());
-        contato.setEmail(contatoAtualizado.getEmail());
-        contato.setTelefone(contatoAtualizado.getTelefone());
-
-        Contato contatoSalvo = repository.save(contato);
-        return ResponseEntity.ok(contatoSalvo);
+    public ResponseEntity<Contato> atualizar(@PathVariable Integer id,
+                                       @Valid @RequestBody Contato contatoAtualizar) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Contato de ID "+id+" não encontrado");
+        }
+        contatoAtualizar.setCodigo(id);
+        Contato contatoAtualizado = repository.save(contatoAtualizar);
+        return ResponseEntity.ok(contatoAtualizado);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Integer id) {
-        if (!repository.existsById(id)) {
-            throw new RecursoNaoEncontradoException("Contato nao encontrado: " + id);
-        }
-
-        repository.deleteById(id);
+        Contato contato = repository.findById(id)
+                            .orElseThrow(() -> new EntityNotFoundException
+                                ("Contato de ID "+id+" não encontrado"));
+        repository.delete(contato);
         return ResponseEntity.noContent().build();
     }
 
