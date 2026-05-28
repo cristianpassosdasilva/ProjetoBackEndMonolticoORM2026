@@ -1,0 +1,23 @@
+# OS files
+.DS_Store
+
+# Editor settings (local workspace)
+.vscode/
+
+# Maven build outputs
+**/target/
+
+# Gradle build outputs
+**/.gradle/
+**/build/
+
+# Compiled outputs often generated in this repo
+**/bin/
+
+# Local Gradle wrappers generated during setup (Lista-de-Exercicios-1)
+Lista-de-Exercicios-1/projeto-gradle-groovy/gradlew
+Lista-de-Exercicios-1/projeto-gradle-groovy/gradlew.bat
+Lista-de-Exercicios-1/projeto-gradle-groovy/gradle/
+Lista-de-Exercicios-1/projeto-gradle-kotlin/gradlew
+Lista-de-Exercicios-1/projeto-gradle-kotlin/gradlew.bat
+Lista-de-Exercicios-1/projeto-gradle-kotlin/gradle/
