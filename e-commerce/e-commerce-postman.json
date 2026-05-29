@@ -1,0 +1,194 @@
+{
+  "info": {
+    "name": "E-Commerce API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Clientes",
+      "item": [
+        {
+          "name": "Listar todos os clientes",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/clientes"
+          }
+        },
+        {
+          "name": "Buscar cliente por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/clientes/ALFKI"
+          }
+        },
+        {
+          "name": "Criar cliente",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/clientes",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"TESTE\",\n  \"nome\": \"Cliente Teste\",\n  \"cargo\": \"Desenvolvedor\",\n  \"endereco\": \"Rua das Flores, 100\",\n  \"cidade\": \"Uberlândia\",\n  \"cep\": \"38400000\",\n  \"pais\": \"Brazil\",\n  \"telefone\": \"34999990000\",\n  \"fax\": null\n}"
+            }
+          }
+        },
+        {
+          "name": "Atualizar cliente",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/clientes/TESTE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"TESTE\",\n  \"nome\": \"Cliente Atualizado\",\n  \"cargo\": \"Senior Dev\",\n  \"endereco\": \"Av. Brasil, 200\",\n  \"cidade\": \"Uberlândia\",\n  \"cep\": \"38400001\",\n  \"pais\": \"Brazil\",\n  \"telefone\": \"34999991111\",\n  \"fax\": null\n}"
+            }
+          }
+        },
+        {
+          "name": "Remover cliente",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/clientes/TESTE"
+          }
+        },
+        {
+          "name": "Listar pedidos do cliente",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/clientes/ALFKI/pedidos"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pedidos",
+      "item": [
+        {
+          "name": "Listar todos os pedidos",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/pedidos"
+          }
+        },
+        {
+          "name": "Buscar pedido por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/pedidos/10248"
+          }
+        },
+        {
+          "name": "Criar pedido com itens",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/pedidos",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clienteId\": \"ALFKI\",\n  \"dataPedido\": \"2026-05-28T10:00:00\",\n  \"itens\": [\n    {\n      \"produtoId\": 1,\n      \"precoVenda\": 18.00,\n      \"quantidade\": 2,\n      \"desconto\": 0.0\n    },\n    {\n      \"produtoId\": 2,\n      \"precoVenda\": 19.00,\n      \"quantidade\": 1,\n      \"desconto\": 0.1\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Atualizar pedido",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/pedidos/10248",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clienteId\": \"VINET\",\n  \"dataPedido\": \"2026-05-28T14:00:00\",\n  \"itens\": [\n    {\n      \"produtoId\": 11,\n      \"precoVenda\": 14.00,\n      \"quantidade\": 10,\n      \"desconto\": 0.0\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Remover pedido",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/pedidos/10248"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Itens do Pedido",
+      "item": [
+        {
+          "name": "Listar itens do pedido",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/pedidos/10643/itens"
+          }
+        },
+        {
+          "name": "Adicionar item ao pedido",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/pedidos/10643/itens",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"produtoId\": 3,\n  \"precoVenda\": 10.00,\n  \"quantidade\": 5,\n  \"desconto\": 0.0\n}"
+            }
+          }
+        },
+        {
+          "name": "Atualizar item do pedido",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/pedidos/10643/itens/3",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"produtoId\": 3,\n  \"precoVenda\": 12.00,\n  \"quantidade\": 8,\n  \"desconto\": 0.05\n}"
+            }
+          }
+        },
+        {
+          "name": "Remover item do pedido",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/pedidos/10643/itens/3"
+          }
+        }
+      ]
+    }
+  ]
+}
