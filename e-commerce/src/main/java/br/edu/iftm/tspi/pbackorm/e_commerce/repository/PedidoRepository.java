@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 import br.edu.iftm.tspi.pbackorm.e_commerce.domain.Pedido;
 
 @Repository
-public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
+public interface PedidoRepository extends JpaRepository<Pedido,Integer>{
+    
 }

@@ -1,0 +1,17 @@
+{
+  "idCliente": "ALFKI",
+  "detalhesPedido": [
+    {
+      "idProduto": 1,
+      "precoVenda": 1.99,
+      "quantidade": -5,
+      "desconto": 0.1
+    },
+    {
+      "idProduto": 2,
+      "precoVenda": 1.76,
+      "quantidade": -10,
+      "desconto": 0.0
+    }
+  ]
+}

@@ -26,14 +26,14 @@ public class ExceptionHandlerController {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
     }
-    
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErroDTO> tratarBadRequest(MethodArgumentNotValidException ex) {
         List<String> erros = ex.getBindingResult()
-                        .getFieldErrors()
-                        .stream()
-                        .map(e -> e.getField() + ": " + e.getDefaultMessage())
-                        .toList();
+                .getFieldErrors()
+                .stream()
+                .map(e -> e.getField() + ": " + e.getDefaultMessage())
+                .toList();
 
         ErroDTO erro = ErroDTO.builder()
                 .dataHora(LocalDateTime.now())
@@ -44,5 +44,15 @@ public class ExceptionHandlerController {
         return ResponseEntity.badRequest().body(erro);
     }
 
+    @ExceptionHandler(EstoqueInsuficienteException.class)
+    public ResponseEntity<ErroDTO> tratarEstoqueInsuficiente(EstoqueInsuficienteException ex) {
+        ErroDTO erro = ErroDTO.builder()
+                .dataHora(LocalDateTime.now())
+                .erros(List.of(ex.getMessage()))
+                .mensagem("Erro de Estoque")
+                .build();
+
+        return ResponseEntity.badRequest().body(erro);
+    }
 
 }

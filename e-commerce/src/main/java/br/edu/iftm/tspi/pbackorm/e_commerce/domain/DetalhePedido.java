@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class DetalhePedido {
 
     @EmbeddedId
-    private DetalhePedidoID id;
+    private DetalhePedidoID id = new DetalhePedidoID();
 
     @ManyToOne
     @MapsId("pedidoId")

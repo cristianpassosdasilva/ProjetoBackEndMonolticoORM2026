@@ -4,21 +4,26 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
 @Data
-@NoArgsConstructor
+@Builder
 public class PedidoDTO {
 
     private Integer id;
 
+    @NotNull
+    private String idCliente;
+
     private LocalDateTime dataPedido;
 
-    @NotBlank(message = "ID do cliente é obrigatório")
-    private String clienteId;
-
     @Valid
-    private List<DetalhePedidoDTO> itens;
+    @NotEmpty(message = "A lista de detalhes do pedido deve possuir pelo menos um item")
+    private List<DetalhePedidoDTO> detalhesPedido;
+
 }

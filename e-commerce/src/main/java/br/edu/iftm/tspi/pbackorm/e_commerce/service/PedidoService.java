@@ -1,0 +1,47 @@
+package br.edu.iftm.tspi.pbackorm.e_commerce.service;
+
+import java.time.LocalDateTime;
+
+import org.springframework.stereotype.Service;
+
+import br.edu.iftm.tspi.pbackorm.e_commerce.domain.DetalhePedido;
+import br.edu.iftm.tspi.pbackorm.e_commerce.domain.Pedido;
+import br.edu.iftm.tspi.pbackorm.e_commerce.domain.Produto;
+import br.edu.iftm.tspi.pbackorm.e_commerce.exception.EstoqueInsuficienteException;
+import br.edu.iftm.tspi.pbackorm.e_commerce.repository.PedidoRepository;
+import br.edu.iftm.tspi.pbackorm.e_commerce.repository.ProdutoRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class PedidoService {
+
+    private final PedidoRepository pedidoRepository;
+
+    private final ProdutoRepository produtoRepository;
+
+    @Transactional
+    public Pedido salvar(Pedido pedidoNovo) {
+        pedidoNovo.setDataPedido(LocalDateTime.now());
+
+        for (DetalhePedido detalhe : pedidoNovo.getDetalhesPedido()) {
+            Integer produtoID = detalhe.getProduto().getId();
+            Produto produto = produtoRepository.findById(produtoID)
+                    .orElseThrow(() -> new EntityNotFoundException(
+                    "Produto de ID " + produtoID + " não encontrado"));
+            if (produto.getEstoque() < detalhe.getQuantidade()) {
+                throw new EstoqueInsuficienteException(
+                        "Estoque insuficiente para o produto " + produto.getNome());
+            }
+            Short estoqueNovo = (short) (produto.getEstoque() - detalhe.getQuantidade());
+            produto.setEstoque(estoqueNovo);
+            detalhe.setProduto(produto);
+            detalhe.setPedido(pedidoNovo);
+            produtoRepository.save(produto);
+        }
+        return pedidoRepository.save(pedidoNovo);
+    }
+
+}

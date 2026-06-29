@@ -3,22 +3,26 @@ package br.edu.iftm.tspi.pbackorm.e_commerce.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
 @Data
-@NoArgsConstructor
+@Builder
 public class DetalhePedidoDTO {
 
-    @NotNull(message = "ID do produto é obrigatório")
-    private Integer produtoId;
+    @NotNull
+    private Integer idProduto;
 
-    @Positive(message = "Preço de venda deve ser maior que zero")
+    private Integer idPedido;
+    
+    @Positive(message = "O preço de venda deve ser maior do que 0")
     private Double precoVenda;
 
-    @Min(value = 1, message = "Quantidade mínima é 1")
+    @Min(value = 1, message= "Deve comprar pelo menos uma unidade do item")
     private Short quantidade;
 
-    @Min(value = 0, message = "Desconto não pode ser negativo")
     private Double desconto;
+
 }
