@@ -1,10 +1,15 @@
 package br.edu.iftm.tspi.pbackorm.e_commerce.controller;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.iftm.tspi.pbackorm.e_commerce.domain.Pedido;
@@ -33,5 +38,18 @@ public class PedidoController {
                         .status(HttpStatus.CREATED)
                         .body(pedidoSalvoDto);
     }
-        
+
+    @GetMapping
+    public ResponseEntity<List<PedidoDTO>> buscarPorClienteEPeriodo(
+                        @RequestParam(required = true) String clienteId,
+                        @RequestParam(required = true) LocalDate dataInicio,
+                        @RequestParam(required = true) LocalDate dataFim) {
+        List<PedidoDTO> pedidos = pedidoService
+                        .buscarPedidosPorClienteEPeriodo(clienteId, dataInicio, dataFim);
+        if (pedidos.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(pedidos);
+    }
+
 }

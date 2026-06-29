@@ -26,4 +26,6 @@ public class PedidoDTO {
     @NotEmpty(message = "A lista de detalhes do pedido deve possuir pelo menos um item")
     private List<DetalhePedidoDTO> detalhesPedido;
 
+    private Double valorTotal;
+
 }

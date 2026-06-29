@@ -1,6 +1,7 @@
 package br.edu.iftm.tspi.pbackorm.e_commerce.repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import br.edu.iftm.tspi.pbackorm.e_commerce.domain.Produto;
 import br.edu.iftm.tspi.pbackorm.e_commerce.dto.ProdutoDTO;
 import br.edu.iftm.tspi.pbackorm.e_commerce.dto.UnidadesCompradasDTO;
+import br.edu.iftm.tspi.pbackorm.e_commerce.dto.UnidadesCompradasJpqlDTO;
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto,Integer> {
@@ -57,6 +59,22 @@ public interface ProdutoRepository extends JpaRepository<Produto,Integer> {
                     """)
     public List<UnidadesCompradasDTO> findUnidadesCompradasPeriodo(
          @Param("dataInicio") LocalDate inicio,
-         @Param("dataFim") LocalDate fim);    
+         @Param("dataFim") LocalDate fim);
+
+    @Query("""
+              SELECT new br.edu.iftm.tspi.pbackorm.e_commerce.dto.UnidadesCompradasJpqlDTO(
+                    p.nome, SUM(dp.quantidade))
+              FROM DetalhePedido dp
+                   JOIN dp.produto p
+                   JOIN dp.pedido pd
+              WHERE pd.dataPedido BETWEEN :dataInicio AND :dataFim
+                AND (:produtoId IS NULL OR p.id = :produtoId)
+              GROUP BY p.nome
+              ORDER BY SUM(dp.quantidade) DESC
+            """)
+    public List<UnidadesCompradasJpqlDTO> buscarUnidadesCompradasPeriodoJpql(
+         @Param("dataInicio") LocalDateTime dataInicio,
+         @Param("dataFim") LocalDateTime dataFim,
+         @Param("produtoId") Integer produtoId);
 
 }

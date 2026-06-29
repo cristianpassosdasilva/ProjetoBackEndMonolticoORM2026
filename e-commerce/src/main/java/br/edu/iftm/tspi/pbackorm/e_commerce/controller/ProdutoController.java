@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.iftm.tspi.pbackorm.e_commerce.domain.Produto;
 import br.edu.iftm.tspi.pbackorm.e_commerce.dto.ProdutoDTO;
 import br.edu.iftm.tspi.pbackorm.e_commerce.dto.UnidadesCompradasDTO;
+import br.edu.iftm.tspi.pbackorm.e_commerce.dto.UnidadesCompradasJpqlDTO;
+import br.edu.iftm.tspi.pbackorm.e_commerce.dto.VendaProdutoDTO;
 import br.edu.iftm.tspi.pbackorm.e_commerce.dto.mapper.ProdutoMapper;
 import br.edu.iftm.tspi.pbackorm.e_commerce.repository.ProdutoRepository;
+import br.edu.iftm.tspi.pbackorm.e_commerce.service.ProdutoService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -34,6 +37,8 @@ public class ProdutoController {
     private final ProdutoRepository repository;
 
     private final ProdutoMapper mapper;
+
+    private final ProdutoService service;
 
     @GetMapping
     public ResponseEntity<List<ProdutoDTO>> 
@@ -118,6 +123,29 @@ public class ProdutoController {
             return ResponseEntity.notFound().build();
          }
          return ResponseEntity.ok(produtos);
+    }
+
+    @GetMapping("unidades-compradas-periodo-jpql")
+    public ResponseEntity<List<UnidadesCompradasJpqlDTO>> buscarUnidadesCompradasPeriodoJpql
+                        (@RequestParam(required = true) LocalDate dataInicio,
+                         @RequestParam(required = true) LocalDate dataFim,
+                         @RequestParam(required = false) Integer produtoId) {
+         List<UnidadesCompradasJpqlDTO> produtos = repository
+                        .buscarUnidadesCompradasPeriodoJpql(
+                                dataInicio.atStartOfDay(), dataFim.atTime(23, 59, 59), produtoId);
+         if (produtos.isEmpty()) {
+            return ResponseEntity.notFound().build();
+         }
+         return ResponseEntity.ok(produtos);
+    }
+
+    @GetMapping("/{id}/vendas")
+    public ResponseEntity<List<VendaProdutoDTO>> buscarVendasPorProduto(@PathVariable Integer id) {
+         List<VendaProdutoDTO> vendas = service.buscarVendasPorProduto(id);
+         if (vendas.isEmpty()) {
+            return ResponseEntity.notFound().build();
+         }
+         return ResponseEntity.ok(vendas);
     }
 
 }

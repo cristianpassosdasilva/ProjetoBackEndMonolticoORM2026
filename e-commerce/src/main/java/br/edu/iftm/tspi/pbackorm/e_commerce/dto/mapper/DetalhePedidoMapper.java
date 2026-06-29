@@ -11,11 +11,11 @@ import br.edu.iftm.tspi.pbackorm.e_commerce.dto.DetalhePedidoDTO;
 @Mapper(componentModel = "spring")
 public interface DetalhePedidoMapper {
 
-    @Mapping(source = "produtoId", target = "id.produtoId")
-    @Mapping(source = "produtoId", target = "produto.id")
+    @Mapping(source = "idProduto", target = "id.produtoId")
+    @Mapping(source = "idProduto", target = "produto.id")
     DetalhePedido toEntity(DetalhePedidoDTO dto);
 
-    @Mapping(source = "id.produtoId", target = "produtoId")
+    @Mapping(source = "id.produtoId", target = "idProduto")
     DetalhePedidoDTO toDto(DetalhePedido entity);
 
     List<DetalhePedidoDTO> toDtoList(List<DetalhePedido> entities);

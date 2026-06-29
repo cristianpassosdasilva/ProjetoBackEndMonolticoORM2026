@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.iftm.tspi.pbackorm.e_commerce.domain.Categoria;
 import br.edu.iftm.tspi.pbackorm.e_commerce.dto.CategoriaDTO;
 import br.edu.iftm.tspi.pbackorm.e_commerce.dto.ProdutoDTO;
+import br.edu.iftm.tspi.pbackorm.e_commerce.dto.ValorConsumidoPorProdutoDTO;
 import br.edu.iftm.tspi.pbackorm.e_commerce.dto.mapper.CategoriaMapper;
 import br.edu.iftm.tspi.pbackorm.e_commerce.dto.mapper.ProdutoMapper;
 import br.edu.iftm.tspi.pbackorm.e_commerce.repository.CategoriaRepository;
+import br.edu.iftm.tspi.pbackorm.e_commerce.service.CategoriaService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -34,6 +36,8 @@ public class CategoriaController {
     private final CategoriaMapper mapper;
 
     private final ProdutoMapper mapperProdutos;
+
+    private final CategoriaService service;
 
     @GetMapping
     public List<CategoriaDTO> listar(@RequestParam(required = false) String nome) {
@@ -94,6 +98,14 @@ public class CategoriaController {
         return ResponseEntity.noContent().build();
     }
 
-                    
+    @GetMapping("/{id}/valor-consumido-por-produto")
+    public ResponseEntity<List<ValorConsumidoPorProdutoDTO>> buscarValorConsumidoPorProduto(
+            @PathVariable Integer id) {
+        List<ValorConsumidoPorProdutoDTO> valores = service.buscarValorConsumidoPorProduto(id);
+        if (valores.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(valores);
+    }
 
 }

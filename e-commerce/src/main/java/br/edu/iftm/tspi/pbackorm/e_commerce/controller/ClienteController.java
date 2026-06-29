@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.iftm.tspi.pbackorm.e_commerce.domain.Cliente;
 import br.edu.iftm.tspi.pbackorm.e_commerce.dto.ClienteDTO;
 import br.edu.iftm.tspi.pbackorm.e_commerce.dto.PedidoDTO;
+import br.edu.iftm.tspi.pbackorm.e_commerce.dto.ValorConsumidoPorProdutoDTO;
 import br.edu.iftm.tspi.pbackorm.e_commerce.dto.mapper.ClienteMapper;
 import br.edu.iftm.tspi.pbackorm.e_commerce.dto.mapper.PedidoMapper;
 import br.edu.iftm.tspi.pbackorm.e_commerce.repository.ClienteRepository;
+import br.edu.iftm.tspi.pbackorm.e_commerce.service.ClienteService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -31,6 +33,7 @@ public class ClienteController {
     private final ClienteRepository repository;
     private final ClienteMapper mapper;
     private final PedidoMapper pedidoMapper;
+    private final ClienteService service;
 
     @GetMapping
     public ResponseEntity<List<ClienteDTO>> listar() {
@@ -74,5 +77,15 @@ public class ClienteController {
         Cliente cliente = repository.findById(clienteId)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente de ID " + clienteId + " não encontrado"));
         return ResponseEntity.ok(pedidoMapper.toDtoList(cliente.getPedidos()));
+    }
+
+    @GetMapping("/{clienteId}/valor-consumido-por-produto")
+    public ResponseEntity<List<ValorConsumidoPorProdutoDTO>> buscarValorConsumidoPorProduto(
+            @PathVariable String clienteId) {
+        List<ValorConsumidoPorProdutoDTO> valores = service.buscarValorConsumidoPorProduto(clienteId);
+        if (valores.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(valores);
     }
 }
