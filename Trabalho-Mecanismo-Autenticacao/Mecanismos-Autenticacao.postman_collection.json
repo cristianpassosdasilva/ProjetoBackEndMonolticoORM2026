@@ -1,0 +1,189 @@
+{
+	"info": {
+		"name": "Mecanismos de Autenticacao - IFTM",
+		"description": "Collection para testar o projeto de autenticacao com JWT (Spring Security). Usuarios: cadu/cadu123 (ADMIN: CLIENTE_READ + CLIENTE_WRITE) e joao/joao123 (USER: CLIENTE_READ).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "token_cadu",
+			"value": ""
+		},
+		{
+			"key": "token_joao",
+			"value": ""
+		}
+	],
+	"item": [
+		{
+			"name": "1 - Autenticacao",
+			"item": [
+				{
+					"name": "POST /autenticacao (cadu)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"token_cadu\", pm.response.text());"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{ "key": "username", "value": "cadu" },
+								{ "key": "password", "value": "cadu123" }
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/autenticacao",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "autenticacao" ]
+						},
+						"description": "Autentica o usuario cadu (ADMIN) e salva o token JWT na variavel token_cadu."
+					}
+				},
+				{
+					"name": "POST /autenticacao (joao)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"token_joao\", pm.response.text());"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{ "key": "username", "value": "joao" },
+								{ "key": "password", "value": "joao123" }
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/autenticacao",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "autenticacao" ]
+						},
+						"description": "Autentica o usuario joao (USER) e salva o token JWT na variavel token_joao."
+					}
+				}
+			]
+		},
+		{
+			"name": "2 - Clientes",
+			"item": [
+				{
+					"name": "GET /clientes (sem token) - esperado 401",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/clientes",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "clientes" ]
+						}
+					}
+				},
+				{
+					"name": "GET /clientes (cadu) - esperado 200",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{ "key": "token", "value": "{{token_cadu}}" }
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/clientes",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "clientes" ]
+						}
+					}
+				},
+				{
+					"name": "GET /clientes (joao) - esperado 200",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{ "key": "token", "value": "{{token_joao}}" }
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/clientes",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "clientes" ]
+						}
+					}
+				},
+				{
+					"name": "POST /clientes (cadu) - esperado 200",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{ "key": "token", "value": "{{token_cadu}}" }
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"PEDRO\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/clientes",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "clientes" ]
+						}
+					}
+				},
+				{
+					"name": "POST /clientes (joao) - esperado 403",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{ "key": "token", "value": "{{token_joao}}" }
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"ANA\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/clientes",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "clientes" ]
+						}
+					}
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,14 @@
+spring.application.name=autenticacao
+
+spring.datasource.url=jdbc:mysql://localhost:3306/db_autenticacao?createDatabaseIfNotExist=true
+spring.datasource.username=root
+spring.datasource.password=
+
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.defer-datasource-initialization=true
+spring.sql.init.mode=always
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+jwt.private.key=classpath:app.key
+jwt.public.key=classpath:app.pub
