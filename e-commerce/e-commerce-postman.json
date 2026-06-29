@@ -4,12 +4,143 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    {
-      "key": "base_url",
-      "value": "http://localhost:8080"
-    }
+    { "key": "base_url", "value": "http://localhost:8080" }
   ],
   "item": [
+    {
+      "name": "Produtos",
+      "item": [
+        {
+          "name": "Listar produtos (filtros opcionais)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/produtos?nome=&estoque=&preco=",
+              "host": ["{{base_url}}"],
+              "path": ["produtos"],
+              "query": [
+                { "key": "nome", "value": "" },
+                { "key": "estoque", "value": "" },
+                { "key": "preco", "value": "" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar produto por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/produtos/1", "host": ["{{base_url}}"], "path": ["produtos", "1"] }
+          }
+        },
+        {
+          "name": "Criar produto",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Produto Teste\",\n  \"preco\": 9.99,\n  \"estoque\": 50,\n  \"caminhoImagem\": \"teste.jpg\",\n  \"idCategoria\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/produtos", "host": ["{{base_url}}"], "path": ["produtos"] }
+          }
+        },
+        {
+          "name": "Atualizar produto",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Produto Atualizado\",\n  \"preco\": 12.50,\n  \"estoque\": 40,\n  \"caminhoImagem\": \"teste.jpg\",\n  \"idCategoria\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/produtos/1", "host": ["{{base_url}}"], "path": ["produtos", "1"] }
+          }
+        },
+        {
+          "name": "Remover produto",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/produtos/1", "host": ["{{base_url}}"], "path": ["produtos", "1"] }
+          }
+        },
+        {
+          "name": "Produtos com maior preço por categoria (JPQL)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/produtos/maior-preco-por-categoria",
+              "host": ["{{base_url}}"],
+              "path": ["produtos", "maior-preco-por-categoria"]
+            }
+          }
+        },
+        {
+          "name": "Produtos com maior preço por categoria (nativo)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/produtos/maior-preco-por-categoria-nativo/1",
+              "host": ["{{base_url}}"],
+              "path": ["produtos", "maior-preco-por-categoria-nativo", "1"]
+            }
+          }
+        },
+        {
+          "name": "Unidades compradas no período (nativo)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/produtos/unidades-compradas-periodo?dataInicio=1990-01-01&dataFim=2030-01-01",
+              "host": ["{{base_url}}"],
+              "path": ["produtos", "unidades-compradas-periodo"],
+              "query": [
+                { "key": "dataInicio", "value": "1990-01-01" },
+                { "key": "dataFim", "value": "2030-01-01" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "[Item 1] Unidades compradas no período (JPQL)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/produtos/unidades-compradas-periodo-jpql?dataInicio=1990-01-01&dataFim=2030-01-01",
+              "host": ["{{base_url}}"],
+              "path": ["produtos", "unidades-compradas-periodo-jpql"],
+              "query": [
+                { "key": "dataInicio", "value": "1990-01-01" },
+                { "key": "dataFim", "value": "2030-01-01" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "[Item 2] Unidades compradas no período, filtrando por produto (JPQL)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/produtos/unidades-compradas-periodo-jpql?dataInicio=1990-01-01&dataFim=2030-01-01&produtoId=1",
+              "host": ["{{base_url}}"],
+              "path": ["produtos", "unidades-compradas-periodo-jpql"],
+              "query": [
+                { "key": "dataInicio", "value": "1990-01-01" },
+                { "key": "dataFim", "value": "2030-01-01" },
+                { "key": "produtoId", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "[Item 3] Vendas de um produto por pedido",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/produtos/1/vendas", "host": ["{{base_url}}"], "path": ["produtos", "1", "vendas"] }
+          }
+        }
+      ]
+    },
     {
       "name": "Clientes",
       "item": [
@@ -17,62 +148,144 @@
           "name": "Listar todos os clientes",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/clientes"
+            "url": { "raw": "{{base_url}}/clientes", "host": ["{{base_url}}"], "path": ["clientes"] }
           }
         },
         {
           "name": "Buscar cliente por ID",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/clientes/ALFKI"
+            "url": { "raw": "{{base_url}}/clientes/ALFKI", "host": ["{{base_url}}"], "path": ["clientes", "ALFKI"] }
           }
         },
         {
           "name": "Criar cliente",
           "request": {
             "method": "POST",
-            "url": "{{base_url}}/clientes",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"id\": \"TESTE\",\n  \"nome\": \"Cliente Teste\",\n  \"cargo\": \"Desenvolvedor\",\n  \"endereco\": \"Rua das Flores, 100\",\n  \"cidade\": \"Uberlândia\",\n  \"cep\": \"38400000\",\n  \"pais\": \"Brazil\",\n  \"telefone\": \"34999990000\",\n  \"fax\": null\n}"
-            }
+            },
+            "url": { "raw": "{{base_url}}/clientes", "host": ["{{base_url}}"], "path": ["clientes"] }
           }
         },
         {
           "name": "Atualizar cliente",
           "request": {
             "method": "PUT",
-            "url": "{{base_url}}/clientes/TESTE",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"id\": \"TESTE\",\n  \"nome\": \"Cliente Atualizado\",\n  \"cargo\": \"Senior Dev\",\n  \"endereco\": \"Av. Brasil, 200\",\n  \"cidade\": \"Uberlândia\",\n  \"cep\": \"38400001\",\n  \"pais\": \"Brazil\",\n  \"telefone\": \"34999991111\",\n  \"fax\": null\n}"
-            }
+            },
+            "url": { "raw": "{{base_url}}/clientes/TESTE", "host": ["{{base_url}}"], "path": ["clientes", "TESTE"] }
           }
         },
         {
           "name": "Remover cliente",
           "request": {
             "method": "DELETE",
-            "url": "{{base_url}}/clientes/TESTE"
+            "url": { "raw": "{{base_url}}/clientes/TESTE", "host": ["{{base_url}}"], "path": ["clientes", "TESTE"] }
           }
         },
         {
           "name": "Listar pedidos do cliente",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/clientes/ALFKI/pedidos"
+            "url": {
+              "raw": "{{base_url}}/clientes/ALFKI/pedidos",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "ALFKI", "pedidos"]
+            }
+          }
+        },
+        {
+          "name": "[Item 4] Valor total consumido por produto",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/clientes/ALFKI/valor-consumido-por-produto",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "ALFKI", "valor-consumido-por-produto"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categorias",
+      "item": [
+        {
+          "name": "Listar categorias (filtro opcional por nome)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/categorias?nome=",
+              "host": ["{{base_url}}"],
+              "path": ["categorias"],
+              "query": [{ "key": "nome", "value": "" }]
+            }
+          }
+        },
+        {
+          "name": "Buscar categoria por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/categorias/1", "host": ["{{base_url}}"], "path": ["categorias", "1"] }
+          }
+        },
+        {
+          "name": "Listar produtos da categoria",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/categorias/1/produtos",
+              "host": ["{{base_url}}"],
+              "path": ["categorias", "1", "produtos"]
+            }
+          }
+        },
+        {
+          "name": "Criar categoria",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Categoria Teste\",\n  \"descricao\": \"Descrição de teste\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/categorias", "host": ["{{base_url}}"], "path": ["categorias"] }
+          }
+        },
+        {
+          "name": "Atualizar categoria",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Categoria Atualizada\",\n  \"descricao\": \"Nova descrição\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/categorias/1", "host": ["{{base_url}}"], "path": ["categorias", "1"] }
+          }
+        },
+        {
+          "name": "Remover categoria",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/categorias/1", "host": ["{{base_url}}"], "path": ["categorias", "1"] }
+          }
+        },
+        {
+          "name": "[Item 5] Valor total consumido por produto na categoria",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/categorias/1/valor-consumido-por-produto",
+              "host": ["{{base_url}}"],
+              "path": ["categorias", "1", "valor-consumido-por-produto"]
+            }
           }
         }
       ]
@@ -81,111 +294,31 @@
       "name": "Pedidos",
       "item": [
         {
-          "name": "Listar todos os pedidos",
-          "request": {
-            "method": "GET",
-            "url": "{{base_url}}/pedidos"
-          }
-        },
-        {
-          "name": "Buscar pedido por ID",
-          "request": {
-            "method": "GET",
-            "url": "{{base_url}}/pedidos/10248"
-          }
-        },
-        {
-          "name": "Criar pedido com itens",
+          "name": "Criar pedido com detalhes",
           "request": {
             "method": "POST",
-            "url": "{{base_url}}/pedidos",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"clienteId\": \"ALFKI\",\n  \"dataPedido\": \"2026-05-28T10:00:00\",\n  \"itens\": [\n    {\n      \"produtoId\": 1,\n      \"precoVenda\": 18.00,\n      \"quantidade\": 2,\n      \"desconto\": 0.0\n    },\n    {\n      \"produtoId\": 2,\n      \"precoVenda\": 19.00,\n      \"quantidade\": 1,\n      \"desconto\": 0.1\n    }\n  ]\n}"
-            }
+              "raw": "{\n  \"idCliente\": \"ALFKI\",\n  \"detalhesPedido\": [\n    {\n      \"idProduto\": 1,\n      \"precoVenda\": 18.00,\n      \"quantidade\": 2,\n      \"desconto\": 0.0\n    },\n    {\n      \"idProduto\": 2,\n      \"precoVenda\": 19.00,\n      \"quantidade\": 1,\n      \"desconto\": 0.1\n    }\n  ]\n}"
+            },
+            "url": { "raw": "{{base_url}}/pedidos", "host": ["{{base_url}}"], "path": ["pedidos"] }
           }
         },
         {
-          "name": "Atualizar pedido",
-          "request": {
-            "method": "PUT",
-            "url": "{{base_url}}/pedidos/10248",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"clienteId\": \"VINET\",\n  \"dataPedido\": \"2026-05-28T14:00:00\",\n  \"itens\": [\n    {\n      \"produtoId\": 11,\n      \"precoVenda\": 14.00,\n      \"quantidade\": 10,\n      \"desconto\": 0.0\n    }\n  ]\n}"
-            }
-          }
-        },
-        {
-          "name": "Remover pedido",
-          "request": {
-            "method": "DELETE",
-            "url": "{{base_url}}/pedidos/10248"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Itens do Pedido",
-      "item": [
-        {
-          "name": "Listar itens do pedido",
+          "name": "[Item 6] Pedidos por cliente e período (com produtos e valor total)",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/pedidos/10643/itens"
-          }
-        },
-        {
-          "name": "Adicionar item ao pedido",
-          "request": {
-            "method": "POST",
-            "url": "{{base_url}}/pedidos/10643/itens",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"produtoId\": 3,\n  \"precoVenda\": 10.00,\n  \"quantidade\": 5,\n  \"desconto\": 0.0\n}"
+            "url": {
+              "raw": "{{base_url}}/pedidos?clienteId=ALFKI&dataInicio=1990-01-01&dataFim=2030-01-01",
+              "host": ["{{base_url}}"],
+              "path": ["pedidos"],
+              "query": [
+                { "key": "clienteId", "value": "ALFKI" },
+                { "key": "dataInicio", "value": "1990-01-01" },
+                { "key": "dataFim", "value": "2030-01-01" }
+              ]
             }
-          }
-        },
-        {
-          "name": "Atualizar item do pedido",
-          "request": {
-            "method": "PUT",
-            "url": "{{base_url}}/pedidos/10643/itens/3",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"produtoId\": 3,\n  \"precoVenda\": 12.00,\n  \"quantidade\": 8,\n  \"desconto\": 0.05\n}"
-            }
-          }
-        },
-        {
-          "name": "Remover item do pedido",
-          "request": {
-            "method": "DELETE",
-            "url": "{{base_url}}/pedidos/10643/itens/3"
           }
         }
       ]
